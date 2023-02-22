@@ -3,12 +3,14 @@ package study;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SetTest {
@@ -40,5 +42,12 @@ public class SetTest {
     @ValueSource(ints = {1, 2, 3})
     void containsValue(int value) {
         assertTrue(numbers.contains(value));
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {"A, a"})
+    void csvSourceTest(String input, String expected) {
+        input = input.toLowerCase();
+        assertEquals(expected, input);
     }
 }

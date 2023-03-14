@@ -1,72 +1,28 @@
-import java.util.Scanner;
-
 public class BaseBall {
+    private final int location;
+    private final int number;
 
-    public static final String answer = "456";
-
-    int result;
-
-    public int getResult() {
-        return result;
+    public BaseBall(int location, int number) {
+        this.location = location;
+        this.number = number;
     }
 
-    public void setResult(int result) {
-        this.result = result;
+
+    public boolean strike(BaseBall question) {
+        return this.location == question.location && this.number == question.number;
     }
 
-    public void keepPlay() {
-        if(getResult() != 3) {
-            baseBall();
+    public boolean ball(BaseBall question) {
+        return this.location != question.location && this.number == question.number;
+    }
+
+    public BallStatus play(BaseBall question) {
+        if(this.strike(question)) {
+            return BallStatus.STRIKE;
         }
-    }
-
-    public void baseBall() {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("숫자를 입력해 주세요 : ");
-
-        String input = sc.nextLine();
-        char[] numbers = input.toCharArray();
-        char[] answers = answer.toCharArray();
-
-        checkStrike(numbers, answers);
-        checkBall(numbers, answers);
-    }
-
-
-    public void checkStrike(char[] numbers, char[] answers) {
-        int strike = 0;
-        for (int i = 0; i < numbers.length; i++) {
-            if (numbers[i] == answers[i]) {
-                strike++;
-                setResult(strike);
-                break;
-            }
+        if(this.ball(question)){
+            return BallStatus.BALL;
         }
-        printRestult("스트라이크", strike);
-        keepPlay();
-    }
-
-    public void checkBall(char[] numbers, char[] answers) {
-        int ball = 0;
-
-        for (int i = 0; i < numbers.length; i++) {
-            if (numbers[i] != answers[i]) {
-                for (int j = 0; j < answers.length; j++) {
-                    if (numbers[j] == answers[j]) {
-                        ball++;
-                        break;
-                    }
-                }
-            }
-        }
-        printRestult("볼", ball);
-        keepPlay();
-    }
-
-    public void printRestult(String result, int number){
-
-        if(number != 0){
-            System.out.print(number + " " + result);
-        }
+        return BallStatus.NOTHING;
     }
 }

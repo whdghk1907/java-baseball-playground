@@ -2,16 +2,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Balls {
-
     private final List<Integer> locations;
     private final List<Integer> numbers;
     public Balls(List<Integer> questions) {
+        BallUtils utils = new BallUtils();
         this.locations = new ArrayList<>();
-        this.numbers =questions;
+        int size = questions.size();
+
+        utils.validateLocation(size);
 
         for (int i = 1; i <= questions.size(); i++) {
             this.locations.add(i);
+
+            int question = questions.get(i - 1);
+            utils.validateNumber(question);
         }
+
+        this.numbers =questions;
     }
 
     public List<Integer> getLocations() {
@@ -34,14 +41,14 @@ public class Balls {
         return this.numbers.get(index);
     }
 
-    private Ball getAnswerBall(int i) {
+    private Ball getBall(int i) {
         int location = getLocation(i);
         int number = getNumber(i);
 
         return new Ball(location, number);
     }
 
-    private Ball getQuestionBall(int i, Balls questions) {
+    private Ball getBall(int i, Balls questions) {
         int location = questions.getLocation(i);
         int number = questions.getNumber(i);
 
@@ -51,8 +58,8 @@ public class Balls {
         List<BallStatus> result = new ArrayList<>();
 
         for(int i = 0; i < this.size(); i++) {
-            Ball answer = getAnswerBall(i);
-            Ball question = getQuestionBall(i, questions);
+            Ball answer = getBall(i);
+            Ball question = getBall(i, questions);
 
             BallStatus ballStatus = answer.play(question);
             result.add(ballStatus);
